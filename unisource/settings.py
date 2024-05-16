@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-j+j*7y)a#uy6f6mf(yzx87@-^e=b=z=v65s+ccxprflln0$o#u
 DEBUG = True
 
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','').split(',')
+ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').split(',')
 
 
 # Application definition
