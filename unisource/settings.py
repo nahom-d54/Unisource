@@ -196,4 +196,5 @@ STORAGES = {
           }
         },
     },
+    "staticfiles": "storages.backends.sftpstorage.SFTPStorage"
 }
