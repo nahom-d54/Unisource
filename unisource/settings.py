@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-j+j*7y)a#uy6f6mf(yzx87@-^e=b=z=v65s+ccxprflln0$o#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').split(',')
@@ -182,4 +182,18 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 
 #if not DEBUG:
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.sftpstorage.SFTPStorage",
+        "OPTIONS": {
+          'host': os.environ.get("SFTP_SERVER",""),
+          'root_path': '/unisource',
+          'params': {
+              'username': os.environ.get("SFTP_USERNAME"),
+              'password': os.environ.get("SFTP_PASSWORD"),
+          }
+        },
+    },
+}
