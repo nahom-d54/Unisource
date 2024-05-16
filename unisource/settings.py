@@ -184,17 +184,17 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.sftpstorage.SFTPStorage",
-        "OPTIONS": {
-          'host': os.environ.get("SFTP_SERVER",""),
-          'root_path': '/unisource',
-          'params': {
-              'username': os.environ.get("SFTP_USERNAME"),
-              'password': os.environ.get("SFTP_PASSWORD"),
-          }
-        },
-    },
-}
-STATICFILES_STORAGE = "storages.backends.sftpstorage.SFTPStorage"
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.sftpstorage.SFTPStorage",
+#         "OPTIONS": {
+#           'host': os.environ.get("SFTP_SERVER",""),
+#           'root_path': '/unisource',
+#           'params': {
+#               'username': os.environ.get("SFTP_USERNAME"),
+#               'password': os.environ.get("SFTP_PASSWORD"),
+#           }
+#         },
+#     },
+# }
+
