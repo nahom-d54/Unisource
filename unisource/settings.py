@@ -28,9 +28,10 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-j+j*7y)a#uy6f6mf(yzx87@-^e=b=z=v65s+ccxprflln0$o#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').split(',')
 
 
 # Application definition
@@ -183,6 +184,7 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 
 
 
+
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -200,3 +202,4 @@ AWS_S3_ENDPOINT_URL=os.environ.get('AWS_S3_ENDPOINT_URL', '')
 AWS_S3_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY', '')
 AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_KEY', '')
 AWS_S3_CUSTOM_DOMAIN=os.environ.get('AWS_S3_CUSTOM_DOMAIN', '')
+

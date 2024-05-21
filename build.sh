@@ -17,5 +17,5 @@ phone="$DJANGO_SUPERUSER_PHONE"
 password="$DJANGO_SUPERUSER_PASSWORD"
 username="$DJANGO_SUPERUSER_USERNAME"
 
-
 echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('$email', '$password', phone_number='$phone', username='$username')" | python manage.py shell
+
