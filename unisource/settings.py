@@ -1,4 +1,4 @@
-import dj_database_url
+
 """
 Django settings for unisource project.
 
@@ -13,9 +13,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -104,12 +107,6 @@ WSGI_APPLICATION = 'unisource.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -119,6 +116,13 @@ DATABASES = {
     )
 }
 
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -182,3 +186,17 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+STORAGE_TYPE='S3'
+DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+
+AWS_STORAGE_BUCKET_NAME=os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
+AWS_QUERYSTRING_AUTH=True
+AWS_S3_REGION_NAME=os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_ENDPOINT_URL=os.environ.get('AWS_S3_ENDPOINT_URL', '')
+AWS_S3_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY', '')
+AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_KEY', '')
+AWS_S3_CUSTOM_DOMAIN=os.environ.get('AWS_S3_CUSTOM_DOMAIN', '')

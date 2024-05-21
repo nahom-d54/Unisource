@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.conf import settings
 
 def validate_file_type(value):
     # Define the allowed file types
@@ -20,10 +21,11 @@ def validate_file_type(value):
     ]
 
     # Get the file's content type
-    content_type = value.content_type
+    if settings.STORAGE_TYPE != 'S3':
+        content_type = value.content_type
 
-    if content_type not in allowed_types:
-        raise ValidationError('Invalid File Type')
+        if content_type not in allowed_types:
+            raise ValidationError('Invalid File Type')
 
 class Resource(models.Model):
     name = models.CharField(max_length=255)
