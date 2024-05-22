@@ -195,11 +195,11 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
 
-AWS_STORAGE_BUCKET_NAME=os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
+AWS_STORAGE_BUCKET_NAME=os.environ.get('_AWS_STORAGE_BUCKET_NAME', '')
 AWS_QUERYSTRING_AUTH=True
-AWS_S3_REGION_NAME=os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
-AWS_S3_ENDPOINT_URL=os.environ.get('AWS_S3_ENDPOINT_URL', '')
-AWS_S3_ACCESS_KEY_ID=os.environ.get('AWS_ACCESS_KEY', '')
-AWS_SECRET_ACCESS_KEY=os.environ.get('AWS_SECRET_KEY', '')
-AWS_S3_CUSTOM_DOMAIN=os.environ.get('AWS_S3_CUSTOM_DOMAIN', '')
+AWS_S3_REGION_NAME=os.environ.get('_AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_ENDPOINT_URL=os.environ.get('_AWS_S3_ENDPOINT_URL', '')
+AWS_S3_ACCESS_KEY_ID=os.environ.get('_AWS_ACCESS_KEY', '')
+AWS_SECRET_ACCESS_KEY=os.environ.get('_AWS_SECRET_KEY', '')
+AWS_S3_CUSTOM_DOMAIN=os.environ.get('_AWS_S3_CUSTOM_DOMAIN', '')
 
