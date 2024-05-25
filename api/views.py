@@ -43,18 +43,26 @@ class ResourceViewset(viewsets.ModelViewSet):
         query = self.request.GET.get('query')
         category = self.request.GET.get('category')
         sub_category = self.request.GET.get('sub_category')
-        
-        
+
         if category:
             queryset = queryset.filter(category=int(category))
         if sub_category:
-            queryset = queryset.filter(category_parent=int(sub_category))        
+            queryset = queryset.filter(category=int(sub_category))
         if query:
-            queryset = queryset.filter(Q(name__icontains=query) | Q(author__icontains=query) | Q(file__icontains=query) )
-        
-        serializer = self.serializer_class(queryset, many=True)
+            queryset = queryset.filter(
+                Q(name__icontains=query) |
+                Q(author__icontains=query) |
+                Q(file__icontains=query)
+            )
 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+    
     
 class ReviewViewset(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
