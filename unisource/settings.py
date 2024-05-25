@@ -159,7 +159,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -168,6 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+STATIC_URL = '/static/'
 MEDIA_URL = '/uploads/'
 
 # Email stuff
@@ -186,9 +186,9 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 
 
 
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# if not DEBUG:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 STORAGE_TYPE='S3'
@@ -203,4 +203,12 @@ AWS_S3_ENDPOINT_URL=os.environ.get('_AWS_S3_ENDPOINT_URL', '')
 AWS_S3_ACCESS_KEY_ID=os.environ.get('_AWS_ACCESS_KEY', '')
 AWS_SECRET_ACCESS_KEY=os.environ.get('_AWS_SECRET_KEY', '')
 AWS_S3_CUSTOM_DOMAIN=os.environ.get('_AWS_S3_CUSTOM_DOMAIN', '')
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# if AWS_S3_CUSTOM_DOMAIN:
+#     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+#     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/uploads/"
 
