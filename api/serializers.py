@@ -20,7 +20,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user': {'read_only': True}}
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Resource
+        model = Rating
         fields = '__all__'
 
 
