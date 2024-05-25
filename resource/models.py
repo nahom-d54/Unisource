@@ -39,6 +39,7 @@ class Resource(models.Model):
     isbn = models.CharField(max_length=100, default="", blank=True, null=True)
     author = models.CharField(max_length=100,default="Unknown Author", blank=True)
 
+    description = models.CharField(max_length=350)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
