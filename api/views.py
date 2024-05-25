@@ -81,20 +81,33 @@ class ReviewViewset(viewsets.ModelViewSet):
 class RatingViewset(viewsets.ModelViewSet):
     serializer_class = RatingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = pagination.PageNumberPagination
     def get_queryset(self):
-        resource_id = self.request.GET.get('resource')
+        resource_id = self.kwargs.get('resource')
         if not resource_id:
-            raise exceptions.ErrorDetail("resource query not specified")
-        queryset = Rating.objects.filter(resource=int(resource_id))
+            raise exceptions.NotAcceptable('query not acceptable')
+        queryset = Rating.objects.filter(resource=resource_id)
         return queryset
     def perform_create(self, serializer):
-        resource_id = self.request.GET.get('resource')
-        serializer.save(user=self.request.user, resource=int(resource_id))
+        resource_id = self.kwargs.get('resource')
+        resource = get_object_or_404(Resource, id=resource_id)
+        user = self.request.user
+    
+        # Check if the user has already rated the resource
+        existing_rating = Rating.objects.filter(user=user, resource=resource).exists()
+        if existing_rating:
+            raise exceptions.ValidationError("You have already rated this resource.")
+        
+        serializer.save(user=self.request.user, resource=resource)
     def get_object(self):
-        obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
-        if obj.user != self.request.user:
-            raise exceptions.PermissionDenied("You are not allowed to update this object.")
-        return obj
+        # Use the pk from the URL to get the specific object
+        pk = self.kwargs.get('pk')
+        if pk is not None:
+            obj = get_object_or_404(Rating, pk=pk)
+            if obj.user != self.request.user:
+                raise exceptions.PermissionDenied("You are not allowed to update this object.")
+            return obj
+        raise exceptions.NotFound("Object not found.")
 
 class RegisterView(CreateAPIView):
     serializer_class = UserSerializer
