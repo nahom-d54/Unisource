@@ -12,10 +12,10 @@ python manage.py collectstatic --no-input
 python manage.py makemigrations
 python manage.py migrate
 
-email="$DJANGO_SUPERUSER_EMAIL"
-phone="$DJANGO_SUPERUSER_PHONE"
-password="$DJANGO_SUPERUSER_PASSWORD"
-username="$DJANGO_SUPERUSER_USERNAME"
+# email="$DJANGO_SUPERUSER_EMAIL"
+# phone="$DJANGO_SUPERUSER_PHONE"
+# password="$DJANGO_SUPERUSER_PASSWORD"
+# username="$DJANGO_SUPERUSER_USERNAME"
 
-echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('$email', '$password', phone_number='$phone', username='$username')" | python manage.py shell
+# echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('$email', '$password', phone_number='$phone', username='$username')" | python manage.py shell
 
