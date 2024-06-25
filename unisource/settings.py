@@ -28,7 +28,7 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-j+j*7y)a#uy6f6mf(yzx87@-^e=b=z=v65s+ccxprflln0$o#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').split(',')
 
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'users',
     'drf_yasg',
     'phonenumber_field',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'django_filters'
 ]
 
 SWAGGER_SETTINGS = {
@@ -118,13 +119,7 @@ DATABASES = {
     )
 }
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -166,9 +161,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-STATIC_URL = '/static/'
-MEDIA_URL = '/uploads/'
+
 
 # Email stuff
 
@@ -182,13 +175,6 @@ MEDIA_URL = '/uploads/'
 # DEFAULT_FROM_EMAIL = "Delight youremail@gmail.com"
 
 AUTH_USER_MODEL = 'users.UserUnisource'
-
-
-
-
-# if not DEBUG:
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 STORAGE_TYPE='S3'
@@ -212,3 +198,15 @@ AWS_S3_OBJECT_PARAMETERS = {
 #     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 #     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/uploads/"
 
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/uploads/'
