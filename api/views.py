@@ -25,7 +25,7 @@ from rest_framework import filters
 
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadonly]
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(parent__isnull=True)
     serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['name', 'parent']
