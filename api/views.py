@@ -11,19 +11,20 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     permission_classes = [IsAdminUserOrReadonly]
+#     serializer_class = CategorySerializer
+#     def get_queryset(self):
+#         sub = self.request.GET.get('sub')
+#         if sub:
+#             queryset = Category.objects.filter(parent=sub)
+#             return queryset
+#         queryset = Category.objects.filter(parent__isnull=True)
+
+#         return queryset
+
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadonly]
-    serializer_class = CategorySerializer
-    def get_queryset(self):
-        sub = self.request.GET.get('sub')
-        if sub:
-            queryset = Category.objects.filter(parent=sub)
-            return queryset
-        queryset = Category.objects.filter(parent__isnull=True)
-
-        return queryset
-
-class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
