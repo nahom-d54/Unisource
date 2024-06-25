@@ -7,6 +7,8 @@ from .serializers import *
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .permissions import IsAdminUserOrReadonly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -21,6 +23,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['name', 'parent']
 
 class ResourcePagination(pagination.PageNumberPagination):
     page_size = 9

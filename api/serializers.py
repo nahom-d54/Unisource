@@ -3,10 +3,21 @@ from resource.models import Category, Resource, Review, Rating
 from django.contrib.auth import get_user_model
 
 
+# class CategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = "__all__"
+
 class CategorySerializer(serializers.ModelSerializer):
+    subcategories = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = "__all__"
+        fields = ['id', 'name', 'parent', 'subcategories']
+
+    def get_subcategories(self, obj):
+        subcategories = Category.objects.filter(parent=obj)
+        return CategorySerializer(subcategories, many=True).data
 
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
