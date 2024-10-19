@@ -28,9 +28,9 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-j+j*7y)a#uy6f6mf(yzx87@-^e=b=z=v65s+ccxprflln0$o#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').split(',')
+ALLOWED_HOSTS = ['unisource.onrender.com', "127.0.0.1"] + os.environ.get('ALLOWED_HOSTS','').split(',')
 
 
 # Application definition
@@ -172,9 +172,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-STATIC_URL = '/static/'
-MEDIA_URL = '/uploads/'
+
 
 # Email stuff
 
@@ -196,25 +194,45 @@ AUTH_USER_MODEL = 'users.UserUnisource'
 #     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+STORAGE_TYPE='local'
 
-STORAGE_TYPE='S3'
-DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/uploads/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    STORAGE_TYPE='S3'
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+    }
 
-AWS_STORAGE_BUCKET_NAME=os.environ.get('_AWS_STORAGE_BUCKET_NAME', '')
-AWS_QUERYSTRING_AUTH=True
-AWS_S3_REGION_NAME=os.environ.get('_AWS_S3_REGION_NAME', 'us-east-1')
-AWS_S3_ENDPOINT_URL=os.environ.get('_AWS_S3_ENDPOINT_URL', '')
-AWS_S3_ACCESS_KEY_ID=os.environ.get('_AWS_ACCESS_KEY', '')
-AWS_SECRET_ACCESS_KEY=os.environ.get('_AWS_SECRET_KEY', '')
-AWS_S3_CUSTOM_DOMAIN=os.environ.get('_AWS_S3_CUSTOM_DOMAIN', '')
+    AWS_STORAGE_BUCKET_NAME=os.environ.get('_AWS_STORAGE_BUCKET_NAME', '')
+    AWS_QUERYSTRING_AUTH=True
+    AWS_S3_REGION_NAME=os.environ.get('_AWS_S3_REGION_NAME', 'us-east-1')
+    AWS_S3_ENDPOINT_URL=os.environ.get('_AWS_S3_ENDPOINT_URL', '')
+    AWS_S3_ACCESS_KEY_ID=os.environ.get('_AWS_ACCESS_KEY', '')
+    AWS_SECRET_ACCESS_KEY=os.environ.get('_AWS_SECRET_KEY', '')
+    AWS_S3_CUSTOM_DOMAIN=os.environ.get('_AWS_S3_CUSTOM_DOMAIN', '')
 
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
 
-# if AWS_S3_CUSTOM_DOMAIN:
-#     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-#     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/uploads/"
+    if AWS_S3_CUSTOM_DOMAIN:
+        STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+        MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/uploads/"
 

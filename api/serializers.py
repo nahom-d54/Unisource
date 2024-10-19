@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from resource.models import Category, Resource, Review, Rating
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.models import Group
+from utils.constants import GROUPS
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +38,8 @@ class UserSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create(**validated_data)
         user.set_password(password)
         user.save()
+        student_group, created = Group.objects.get_or_create(name=GROUPS["STUDENT"])
+        user.groups.add(student_group)
 
         return user
 

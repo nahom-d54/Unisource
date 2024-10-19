@@ -42,6 +42,14 @@ class Resource(models.Model):
     description = models.CharField(max_length=350)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        permissions = [
+            ('view_book', 'Can view book'),
+            ('add_book', 'Can add book'),
+            ('change_book', 'Can change book'),
+            ('delete_book', 'Can delete book'),
+        ]
     
     def __str__(self) -> str:
         return self.name
