@@ -35,6 +35,11 @@ ALLOWED_HOSTS = ['unisource.onrender.com'] + os.environ.get('ALLOWED_HOSTS','').
 
 # Application definition
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default
+    'guardian.backends.ObjectPermissionBackend',   # Guardian for object-level permissions
+)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,7 +53,8 @@ INSTALLED_APPS = [
     'users',
     'drf_yasg',
     'phonenumber_field',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'guardian'
 ]
 
 SWAGGER_SETTINGS = {

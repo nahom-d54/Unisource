@@ -37,12 +37,13 @@ class UserUnisource(AbstractUser):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = PhoneNumberField(region='ET', blank=True, null=True, unique=True)
+    student_id = models.CharField(max_length=30)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_lazy_user = models.BooleanField(default=False)
+    
 
     objects = UserManager()
     
