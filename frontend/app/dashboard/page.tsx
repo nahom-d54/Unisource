@@ -147,9 +147,9 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
           <MainNav />
-          <div className="ml-auto flex items-center space-x-4">
+          {/* <div className="ml-auto flex items-center space-x-4">
             <UserNav />
-          </div>
+          </div> */}
         </div>
       </header>
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">

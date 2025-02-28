@@ -4,6 +4,6 @@ import { getResources } from "@/api/resource";
 export function useResources() {
   return useQuery({
     queryKey: ["resources"],
-    queryFn: getResources,
+    queryFn: () => getResources(),
   });
 }

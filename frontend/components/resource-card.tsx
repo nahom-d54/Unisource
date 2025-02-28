@@ -19,7 +19,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites(resource.id)
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden flex flex-col h-full">
       <div className="relative aspect-[3/2] w-full">
         <Image
           src={resource.thumbnail || "/placeholder.svg?height=400&width=600"}
@@ -30,34 +30,34 @@ export function ResourceCard({ resource }: ResourceCardProps) {
       </div>
       <CardHeader className="p-4">
         <div className="flex items-start justify-between">
-          <div>
-            <CardTitle className="line-clamp-1">{resource.title}</CardTitle>
-            <CardDescription className="line-clamp-1">
+          <div className="flex-1 pr-2">
+            <CardTitle className="line-clamp-1 text-lg">{resource.title}</CardTitle>
+            <CardDescription className="line-clamp-1 text-sm">
               {resource.category} • {resource.subcategory}
             </CardDescription>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toggleFavorite()}>
+          <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={() => toggleFavorite()}>
             <FiHeart className={cn("h-4 w-4", isFavorite ? "fill-primary text-primary" : "")} />
             <span className="sr-only">Toggle favorite</span>
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-0">
+      <CardContent className="p-4 pt-0 flex-grow">
         <p className="line-clamp-2 text-sm text-muted-foreground">{resource.description}</p>
         <div className="mt-2 flex items-center gap-2">
           <RatingStars rating={resource.avg_rating} />
           <span className="text-xs text-muted-foreground">({resource.reviews_count} reviews)</span>
         </div>
       </CardContent>
-      <CardFooter className="flex items-center justify-between p-4 pt-0">
-        <div className="text-xs text-muted-foreground">
+      <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 pt-0 gap-2">
+        <div className="text-xs text-muted-foreground w-full sm:w-auto">
           Added {formatDistanceToNow(new Date(resource.created_at), { addSuffix: true })}
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" asChild>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-initial">
             <Link href={`/resources/${resource.id}`}>View</Link>
           </Button>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="flex-1 sm:flex-initial">
             <a href={resource.file_url} download>
               <FiDownload className="mr-1 h-3 w-3" />
               Download

@@ -5,9 +5,17 @@ import { ResourceCard } from "@/components/resource-card"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Resource } from "@/types"
 import { useResources } from "@/hooks/useResources"
+import { useEffect } from "react"
+import NothingFound from "./noting-found"
 
 export default function ResourceList() {
   const { data: resources, isLoading, error } = useResources();
+
+  useEffect(() => {
+   
+      console.log(resources);
+    
+  }, [resources]);
 
   if (isLoading) {
     return (
@@ -30,12 +38,15 @@ export default function ResourceList() {
       </div>
     )
   }
-
+  if (resources?.results.length === 0) {
+    return <NothingFound />
+  }
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {resources?.map((resource: Resource) => (
-        <ResourceCard key={resource.id} resource={resource} />
-      ))}
+      {
+          resources?.results?.map((resource: Resource) => (
+            <ResourceCard key={resource.id} resource={resource} />
+          ))}
     </div>
   )
 }
