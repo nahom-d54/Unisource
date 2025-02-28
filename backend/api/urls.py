@@ -36,6 +36,13 @@ urlpatterns = [
     path(
         "resource/featured/", views.FeaturedResourceApiview.as_view(), name="featured"
     ),
+    path(
+        "resource/favorites/",
+        views.FavoriteResourceViewset.as_view(
+            {"get": "list", "post": "create", "put": "update", "delete": "destroy"}
+        ),
+        name="favorite",
+    ),
 ]
 
 urlpatterns += router.urls

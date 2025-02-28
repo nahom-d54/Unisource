@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, exceptions, pagination
-from resource.models import Category, Resource, Review, Rating
+from resource.models import Category, Resource, Review, Rating, Tracking
 from rest_framework.generics import CreateAPIView, ListAPIView
 from .serializers import (
     CategorySerializer,
@@ -10,7 +10,7 @@ from .serializers import (
     RatingSerializer,
     UserSerializer,
 )
-from django.db.models import Q
+from django.db.models import Q, Avg
 from .permissions import IsAdminUserOrReadonly
 
 
@@ -59,6 +59,11 @@ class ResourceViewset(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        Tracking.objects.create(user=request.user, resource=instance)
+        return super().retrieve(request, *args, **kwargs)
 
 
 class FeaturedResourceApiview(ListAPIView):
@@ -124,3 +129,29 @@ class RatingViewset(viewsets.ModelViewSet):
 class RegisterView(CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
+
+
+class FavoriteResourceViewset(viewsets.ModelViewSet):
+    serializer_class = ResourceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.favorite_resources.all()
+
+
+class RecentlyViewedView(ListAPIView):
+    serializer_class = ResourceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.recently_viewed.all()[:5]
+
+
+class TopRatedView(ListAPIView):
+    serializer_class = ResourceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Resource.objects.annotate(avg_rating=Avg("ratings__rating")).order_by(
+            "-avg_rating"
+        )[:5]

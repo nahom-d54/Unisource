@@ -86,7 +86,9 @@ class Category(models.Model):
 class FavoriteResource(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="favorite_resources"
+    )
 
 
 class Review(models.Model):
@@ -121,3 +123,15 @@ class Rating(models.Model):
 
     def __str__(self):
         return self.resource.name + " > " + self.user.username
+
+
+class Tracking(models.Model):
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="recently_viewed"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("resource", "user", "created_at")
+        ordering = ["-created_at"]
